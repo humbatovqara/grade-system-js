@@ -1,25 +1,22 @@
-// *** Select Elements ***
+// Select Elements
 const studentForm = document.getElementById("studentForm");
 const studentName = document.getElementById("studentName");
+const selectLesson = document.querySelector(".form-select");
+const modalInput = document.querySelector(".modalInput");
 const modalAddBtn = document.getElementById("modalAddBtn");
 
-// *** Event Listeners - Call Functions ***
+// Event Listeners - Call Functions
 eventListeners();
 
-// *** Functions ***
+// Functions
 function eventListeners() {
     studentForm.addEventListener("submit", addStudent);
     modalAddBtn.addEventListener("click", addScore);
-
-    document.addEventListener("DOMContentLoaded", function () {
-        let students = Storage.getStudentsFromStorage();
-        UI.loadAllStudents(students);
-        // UI.loadScoreTable();
-    });
+    document.addEventListener("DOMContentLoaded", getStudents);
 }
 
 function addStudent(e) {
-    const fullName = studentName.value;
+    const fullName = studentName.value.trim();
     let mathScore = 0,
         physicsScore = 0,
         chemistryScore = 0;
@@ -35,8 +32,7 @@ function addStudent(e) {
         // UI.addStudentToUI(newStudent);
 
         Storage.addStudentToStorage(newStudent);
-        let students = Storage.getStudentsFromStorage();
-        UI.loadAllStudents(students);
+        getStudents();
     }
 
     e.preventDefault();
@@ -44,26 +40,33 @@ function addStudent(e) {
 
 function addScore() {
     let mathScore, physicsScore, chemistryScore;
-    const selectLesson = document.querySelector(".form-select");
-    const modalInput = document.querySelector(".modalInput");
 
+    /*
     if (selectLesson.value == "riyaziyyat") {
-        mathScore = modalInput.value;
+        mathScoreInput = modalInput.value;
     }
     if (selectLesson.value == "fizika") {
-        physicsScore = modalInput.value;
+        physicsScoreInput = modalInput.value;
     }
     if (selectLesson.value == "kimya") {
-        chemistryScore = modalInput.value;
+        chemistryScoreInput = modalInput.value;
     }
+    */
+}
+
+function getStudents() {
+        let students = Storage.getStudentsFromStorage();
+        UI.loadAllStudents(students);
+        // UI.loadScoreTable();
 }
 
 function showExam(index) {
     let data = "";
     let scoreTable = document.querySelector(".scoreTable");
     let dataFromStorage = Storage.getStudentsFromStorage();
-
-    console.log(dataFromStorage[index]);
+    let personObj = dataFromStorage[index];
+    
+    console.log(personObj);
 
     for (const [key, value] of Object.entries(dataFromStorage[index])) {
         data += `
